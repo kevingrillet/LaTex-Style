@@ -1,0 +1,539 @@
+\NeedsTeXFormat{LaTeX2e}[1999/01/01]
+\ProvidesPackage{josselin}[2012/11/17]
+
+
+% PACKAGES REQUIS
+
+\RequirePackage{etex}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[T1]{fontenc}
+\RequirePackage[french]{babel}
+\RequirePackage{listings,wrapfig,graphicx,color, xcolor, shadow,colortbl}
+\RequirePackage{amsmath,amssymb}
+\RequirePackage{mathabx,cancel,ulem, eurosym, fourier-orns}
+\RequirePackage{pstricks, pst-plot}
+\RequirePackage{hyperref,titlesec,titletoc}
+\RequirePackage[french,boxed,ruled]{algorithm2e}
+\RequirePackage{fancybox,mathtools,eurosym}
+\RequirePackage{fancyvrb, fancybox}
+\RequirePackage{comment, multicol}
+\RequirePackage{tikz, circuitikz}
+\RequirePackage{tocloft, moresize}
+\RequirePackage{makeidx}
+
+
+% OPTIONS
+
+\setlength{\headheight}{15pt}
+
+\newif\if@RV \@RVfalse
+\DeclareOption{RV}{\@RVtrue}
+
+\newif\if@R \@Rfalse
+\DeclareOption{R}{\@Rtrue}
+
+\newif\if@H \@Hfalse
+\DeclareOption{H}{\@Htrue}
+
+\newif\if@F \@Ffalse
+\DeclareOption{F}{\@Ftrue}
+
+\newif\if@NC \@NCfalse
+\DeclareOption{NC}{\@NCtrue}
+
+\newif\if@LS \@LSfalse
+\DeclareOption{LS}{\@LStrue}
+
+\newif\if@BM \@BMfalse
+\DeclareOption{BM}{\@BMtrue}
+
+\newif\if@LS \@LSfalse
+\DeclareOption{LS}{\@LStrue}
+
+\DeclareOption*{}%%
+
+\ProcessOptions
+
+\makeindex
+
+\usetikzlibrary{arrows,automata}
+\usetikzlibrary{circuits.logic.US}
+
+\if@LS \newcommand{\LS}{1.5}
+\else \newcommand{\LS}{1.2}
+\fi
+
+\if@RV
+	\usepackage[a4paper, twoside, top=2cm, bottom=2cm, inner=1.5cm, outer=1cm]{geometry}
+\else
+	\if@R
+		\usepackage[a4paper, top=2cm, bottom=2cm, left=1.5cm, right=1cm]{geometry}
+	\else
+		\if@H
+			\if@BM
+				\usepackage[a4paper, top=3.5cm, bottom=3.5cm, left=2.5cm, right=2.5cm]{geometry}
+			\else
+				\usepackage[a4paper, top=2cm, bottom=2cm, left=1cm, right=1cm]{geometry}
+			\fi
+		\else
+			\if@BM
+				\usepackage[a4paper, top=3.5cm, bottom=3.5cm, left=2.5cm, right=2.5cm]{geometry}
+			\else
+				\usepackage[a4paper, top=1cm, bottom=2cm, left=1cm, right=1cm]{geometry}
+			\fi
+		\fi
+	\fi
+\fi
+
+
+\if@F
+\usepackage{draftwatermark}
+\SetWatermarkAngle{55}
+\SetWatermarkScale{2}
+\SetWatermarkFontSize{36pt}
+\SetWatermarkColor{gray!25}
+\SetWatermarkText{\textbf{\textsc{\href{http://www.josselinmarnat.com}{www.Josselin MARNAT.com}}}}
+\fi
+
+
+\if@RV
+	\usepackage{fancyhdr}\fancyhead{}\fancyfoot{}
+	\renewcommand\headrulewidth{.5pt\renewcommand\footrulewidth{.5pt}
+	\fancyhead[RE,LO]{\textsc{\monTitre}}
+	\fancyhead[RO,LE]{\textsc{\monAuteur}}
+	\fancyfoot[LE,RO]{\thepage}
+	\fancyfoot[LO,RE]{\footnotesize{Rédigé en \LaTeX\ par \textsc{\href{http://www.josselinmarnat.com}{Josselin MARNAT}}}}
+	\pagestyle{fancy}
+\else
+	\if@R
+		\usepackage{fancyhdr}\fancyhead{}\fancyfoot{}
+		\renewcommand\headrulewidth{.5pt}\renewcommand\footrulewidth{.5pt}
+		\fancyhead[R]{\textsc{\monAuteur}}
+		\fancyhead[L]{\textsc{\monTitre}}
+		\fancyfoot[L]{\footnotesize{Rédigé en \LaTeX\ par \textsc{\href{http://www.josselinmarnat.com}{Josselin MARNAT}}}}
+		\fancyfoot[R]{\thepage}
+		\pagestyle{fancy}
+	\else
+		\if@H
+		\usepackage{fancyhdr}\fancyhead{}\fancyfoot{}
+		\renewcommand\headrulewidth{.5pt}\renewcommand\footrulewidth{.5pt}
+		\fancyhead[R]{\textsc{\monAuteur}}
+		\fancyhead[L]{\textsc{\monTitre}}
+		\fancyfoot[L]{\footnotesize{Rédigé en \LaTeX\ par \textsc{\href{http://www.josselinmarnat.com}{Josselin MARNAT}}}}
+		\fancyfoot[R]{\thepage}
+		\pagestyle{fancy}
+		\fi
+	\fi
+\fi
+
+\usepackage[skip=0pt]{caption}
+\newcommand{\image}[3]{\begin{figure}[ht]\begin{center}\includegraphics[#3]{#2}\caption{#1}\end{center}\end{figure}}
+
+\newcommand{\sectiontoc}[1]{\addcontentsline{toc}{section}{#1}\section*{#1}}
+\newcommand{\subsectiontoc}[1]{\addcontentsline{toc}{subsection}{#1}\subsection*{#1}}
+
+\newcommand{\edgenode}[2]{edge from parent node[#1, draw=none] {#2}}
+
+
+\newcommand{\rouge}[1]{\red{#1}\black}
+
+
+\SetKwFor{Tq}{tant que}{:}{fin\:tant\:que}
+\SetKwIF{Si}{SinonSi}{Sinon}{si}{alors :}{sinon si}{sinon :}{fin\:si}
+\SetKwFor{Pour}{pour}{:}{fin\:pour}
+\SetKw{Retour}{retourner}
+\SetKwBlock{Begin}{boucle}{fin\:boucle}
+
+\newcommand{\crochet}{\underbracket[.5pt]}
+\lstnewenvironment{code}{%
+	\lstset{backgroundcolor=\color{black},
+	frame=single,
+	framerule=0pt,
+	basicstyle=\ttfamily,
+	columns=fullflexible}\color{green}}{}
+
+
+\hypersetup{pdfauthor={\href{http://www.josselinmarnat.com}{Josselin MARNAT}}}
+
+\newcommand{\legende}[1]{\\\textsc{#1}}
+
+\newcommand{\ega}[1]{
+	\begin{array}[t]{@{}r@{\;}l}
+	#1
+	\end{array}}
+
+\newcommand{\egac}[1]{
+	\begin{array}[c]{@{}r@{\;}l}
+	#1
+	\end{array}}
+
+\newcommand{\algo}[2]{
+\begin{center}
+		%\fbox{
+			\begin{minipage}{#1cm}
+				\begin{algorithm}[H]
+					\SetAlgoLined
+					#2
+				\end{algorithm}
+			\end{minipage}
+		%}
+\end{center}
+}
+
+
+\newsavebox{\PYbgbox}
+\newenvironment{PYcolorbox}%
+ {\noindent%
+\renewcommand\theFancyVerbLine{%
+\textcolor{red!80!black}{\small\arabic{FancyVerbLine}}}%
+	\begin{lrbox}{\PYbgbox}%
+	\begin{minipage}{\linewidth-2\fboxsep}%
+	\color{green}%
+	\begin{Verbatim}}%
+ {\end{Verbatim}%
+ \ignorespacesafterend%
+	\end{minipage}%
+	\end{lrbox}%
+	\colorbox{black}{\usebox{\PYbgbox}}}
+
+
+
+\newcommand{\VerbIn}[1]{\linespread{1}\VerbatimInput[frame = leftline, framesep = 8pt, tabsize=4]{#1}\linespread{\LS}}
+
+\newcommand{\ConsIn}[2]{
+	\linespread{1}
+	\vspace{5pt}
+	\begin{center}
+	\noindent
+	\begin{Sbox}
+	\begin{minipage}{#2cm}
+	\VerbatimInput[formatcom=\color{green}, tabsize=4]{#1}
+	\vspace{-10pt}
+	\end{minipage}
+	\end{Sbox}
+	\fcolorbox{black}{black}{\TheSbox}
+	\end{center}
+	\vspace{5pt}
+	\linespread{\LS}
+}
+\newenvironment{monverb}{\VerbatimEnvironment%
+	\linespread{1}
+
+	\vspace{5pt}
+	\begin{minipage}{\linewidth-2\fboxsep-2\fboxrule-4pt}
+	\begin{Verbatim}[frame = leftline, framesep = 8pt, tabsize=0, commandchars=@\[\]]}{%
+	\end{Verbatim}
+	\end{minipage}
+	\vspace{5pt}
+
+}
+
+\newenvironment{terminal}{\VerbatimEnvironment%
+
+	\linespread{1}
+	\noindent
+	\begin{Sbox}
+	\begin{minipage}{\linewidth-2\fboxsep-2\fboxrule-4pt}
+	\begin{Verbatim}[formatcom=\color{green}]}{\end{Verbatim}\end{minipage}
+	\end{Sbox}\fcolorbox{black}{black}{\TheSbox}
+}
+
+\newenvironment{console}[1]{\VerbatimEnvironment%
+	\linespread{1}
+	\vspace{5pt}
+	\begin{center}
+	\noindent
+	\begin{Sbox}
+	\begin{minipage}{#1cm}
+	\begin{Verbatim}[formatcom=\color{green}, tabsize=0]}{
+	\end{Verbatim}\vspace{-10pt}
+	\end{minipage}
+	\end{Sbox}
+	\fcolorbox{black}{black}{\TheSbox}
+	\end{center}
+	\vspace{5pt}
+	\linespread{\LS}
+}
+
+\newcommand{\ul}{\underline}
+\newcommand{\cv}{\multicolumn{1}{c|}{}}
+
+\newcommand{\TD}[3]{
+	\begin{center}
+	\vspace{10pt}
+	\boxput*(0,1){
+		\colorbox{white}{
+			\textbf{TD #1 - Question #2}}
+		}{\setlength{\fboxsep}{10pt}
+		\fbox{
+			\begin{minipage}{17cm}#3\end{minipage}}}\end{center}}
+
+\newcommand{\titre}[1]{\begin{titlepage}\vspace*{2cm}\begin{center}\textbf{\textsc{\Huge #1}}\\[3cm]\Large{Rédigé en \LaTeX\ par \href{http://www.josselinmarnat.com}{Josselin MARNAT}}\vspace*{\fill}\end{center}\end{titlepage}}
+
+\newcommand{\pagetitre}[2]{\thispagestyle{empty}\begin{center}\vspace*{3cm}\huge{\textsc{\textbf{#1}}}\\\hrulefill\\[1cm]\Large{#2}\\\vfill\footnotesize{Rédigé en \LaTeX\ par \href{http://www.josselinmarnat.com}{Josselin MARNAT}}\end{center}\newpage}
+
+\newcommand{\sommaire}{\renewcommand{\contentsname}{Sommaire}\tableofcontents\newpage}
+
+\newcommand{\commencement}[3]{\thispagestyle{empty}\vspace*{2cm}\begin{center}\textbf{\textsc{\Huge #2}}\\[3cm]\Large{Rédigé en \LaTeX\ par \href{http://www.josselinmarnat.com}{Josselin MARNAT} \\[-5pt] \rule{18cm}{1pt} \\[5pt] Université Jean Monnet - Licence Informatique - Semestre #1} \vspace*{\fill}\end{center}\newpage\thispagestyle{empty}{\color{white}{a}}\renewcommand{\contentsname}{\thispagestyle{empty}\centerline{\textsc{Sommaire}}}\setcounter{tocdepth}{#3}\tableofcontents\newpage\thispagestyle{empty}{\color{white}{a}}\newpage}
+
+
+
+
+\if@RV
+	\newcommand{\debut}[3]{
+		\newcommand{\monTitre}{#2}
+		\newcommand{\monAuteur}{#3}
+		\thispagestyle{empty}
+		\vspace*{2cm}
+			\begin{center}
+			\textbf{\textsc{\Huge{\monTitre}}}
+				\\[3cm]\large{\textsc{\monAuteur}}
+				\\[-5pt] \rule{15cm}{1pt}
+				\\[5pt] \textsc{Université Jean Monnet - Licence Informatique III\textnormal{\ieme} Année}
+				\\ \vfill
+				\begin{center} \includegraphics[scale=.25]{logoUJM.jpeg} \end{center}
+				\footnotesize{Rédigé en \LaTeX\ par \textsc{\href{http://www.josselinmarnat.com}{Josselin MARNAT}}}
+			\end{center}
+		\newpage\thispagestyle{empty}\mbox{}\newpage
+		\renewcommand{\contentsname}{\thispagestyle{empty}
+		\centerline{\textsc{Sommaire}}\vspace{0cm}}
+		\setcounter{tocdepth}{#1}
+		\tableofcontents
+		\newpage\thispagestyle{empty}\mbox{}\newpage
+	}
+\else
+	\newcommand{\debut}[3]{
+		\newcommand{\monTitre}{#2}
+		\newcommand{\monAuteur}{#3}
+		\thispagestyle{empty}
+		\vspace*{2cm}
+			\begin{center}
+			\textbf{\textsc{\Huge{\begin{tikzpicture}\node [fill=gray!10,draw,thick, minimum height=2cm, minimum width=3cm, decorate, decoration={random steps,segment length=3pt,amplitude=1pt}]{\monTitre};\end{tikzpicture}}}}
+				\\[3cm]\large{\textsc{\monAuteur}}
+				\\[-5pt] \rule{15cm}{1pt}
+				\\[5pt] \textsc{Université Jean Monnet - Licence Informatique III\textnormal{\ieme} Année}
+				\\ \vfill
+				\begin{center} \includegraphics[scale=.25]{logoUJM.jpeg} \end{center}
+				\footnotesize{Rédigé en \LaTeX\ par \textsc{\href{http://www.josselinmarnat.com}{Josselin MARNAT}}}
+			\end{center}
+		\newpage
+		\renewcommand{\contentsname}{\thispagestyle{empty}
+		\centerline{\textsc{Sommaire}}\vspace{0cm}}
+		\setcounter{tocdepth}{#1}
+		\tableofcontents\newpage
+	}
+\fi
+
+\newcommand{\prog}[1]{\colorbox{black}{\textcolor{green}{\textnormal{\texttt{#1}}}}\:}
+\newcommand{\progv}[2]{\begin{center}\fcolorbox{black}{black}{\parbox{#1\textwidth}{\color{green}\texttt{#2}}}\end{center}}
+\newcommand{\tbp}{\color{black}XXXXX\color{white}}
+\newcommand{\tp}{\color{black}XXXXX\color{white}}
+
+
+\newcommand{\app}[5]{\begin{array}[t]{r @{\:} c @{\:} r @{\:} c @{\:} l} #1 & \text{:} & #2 & \to & #3 \\[-3pt] \multicolumn{3}{@{} r@ {\:}}{#4} & \mapsto & #5 \end{array}}
+\newcommand{\appv}[4]{\begin{array}{r @{\:} c @{\:} r @{\:} c @{\:} l} & & #1 & \to & #2 \\ \multicolumn{3}{@{} r@ {\:}}{#3} & \mapsto & #4 \end{array}}
+\newcommand{\appc}[3]{#1 \::\: #2 \mapsto #3}
+
+
+%\renewcommand{\neg}{\righthalfcap}
+\newcommand{\abs}[1]{\left\vert\:#1\:\right\vert}
+\newcommand{\lm}[2]{\displaystyle \lim_{#1 \to #2}}
+\newcommand{\Lra}{\:\Leftrightarrow\:}
+\newcommand{\lra}{\:\leftrightarrow\:}
+\newcommand{\Ra}{\:\Rightarrow\:}
+\newcommand{\ra}{\:\rightarrow\:}
+\newcommand{\La}{\:\Leftarrow\:}
+\newcommand{\la}{\:\leftarrow\:}
+\newcommand{\x}{\times}
+\newcommand{\ac}{\^\ }
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\mr}{\mathbb{r}}
+\newcommand{\mB}{\mathcal{B}}
+\newcommand{\mD}{\mathcal{D}}
+\newcommand{\mE}{\mathcal{E}}
+\newcommand{\mG}{\mathcal{G}}
+\newcommand{\mI}{\mathcal{I}}
+\newcommand{\pr}{\mathbb{r}}
+\newcommand{\pt}{\forall\:}
+\newcommand{\ex}{\exists\:}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ev}{\varnothing}
+\newcommand{\Card}{\text{Card}}
+\newcommand{\card}{\text{card}}
+\newcommand{\tq}{\text{ tq. }}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\mR}{\mathcal{R}}
+\newcommand{\mC}{\mathcal{C}}
+\newcommand{\mP}{\mathcal{P}}
+\newcommand{\mO}{\mathcal{O}}
+\newcommand{\mM}{\mathcal{M}}
+\newcommand{\mA}{\mathcal{A}}
+\newcommand{\mL}{\mathcal{L}}
+\newcommand{\mJ}{\mathcal{J}}
+\newcommand{\mF}{\mathcal{F}}
+\newcommand{\op}{\text{ op }}
+\newcommand{\dom}{\text{ dom}}
+\newcommand{\SF}{\text{ SF}}
+\newcommand{\FND}{\text{FND}}
+\newcommand{\ITE}{\text{ITE}}
+\newcommand{\FNC}{\text{FNC}}
+\newcommand{\MA}{\text{MA}}
+\newcommand{\nwedge}{\bar{\wedge}}
+\newcommand{\nvee}{\bar{\vee}}
+\newcommand{\qed}{$\sqbullet$}
+
+
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\dg}{\text{deg}}
+\newcommand{\sh}{\text{sh}}
+\newcommand{\ch}{\text{ch}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\dm}{\text{dim}}
+\newcommand{\tanhyp}{\text{th}}
+\newcommand{\argsh}{\text{argsh}}
+\newcommand{\argch}{\text{arcsh}}
+\newcommand{\argth}{\text{argth}}
+\newcommand{\matrice}[1]{\begin{pmatrix}#1\end{pmatrix}}
+\newcommand{\vmatrice}[1]{\begin{vmatrix}#1\end{vmatrix}}
+\newcommand{\pqmatrice}[1]{\left(\begin{array}{cccc@{\hskip 10pt}|@{\hskip 10pt}c}#1\end{array}\right)}
+\newcommand{\pmatrice}[1]{\left(\begin{array}{ccc@{\hskip 10pt}|@{\hskip 10pt}c}#1\end{array}\right)}
+\newcommand{\dt}{\text{dét}\:}
+\newcommand{\cof}{\text{cof}\:}
+\newcommand{\Cof}{\text{Cof}\:}
+\newcommand{\qqqquad}{\qquad\qquad}
+\newcommand{\systgd}[1]{\left\{\begin{array}{rl}#1\end{array}\right.}
+\newcommand{\systrl}[1]{\left\{\begin{array}{rl}#1\end{array}\right.}
+\newcommand{\systl}[1]{\left\{\begin{array}{l}#1\end{array}\right.}
+\newcommand{\systr}[1]{\left\{\begin{array}{r}#1\end{array}\right.}
+\newcommand{\systc}[1]{\left\{\begin{array}{c}#1\end{array}\right.}
+\newcommand{\Vect}{\text{Vect}}
+\newcommand{\bp}{\big|}
+\newcommand{\tw}[1]{\textnormal{\texttt{#1}}}
+\renewcommand{\bf}[1]{\textbf{#1}}
+\newcommand{\ssi}{\text{ si, et seulement si }}
+\newcommand{\proj}{\text{proj}}
+\newcommand{\fl}[1]{\xrightarrow{#1}}
+
+\usetikzlibrary[backgrounds]
+\tikzstyle{background rectangle}=
+  [draw=blue!50,rounded corners=1ex]
+\newcommand{\automate}[2]{$$\begin{tikzpicture}[show background rectangle,->,>=stealth',shorten >=2pt,auto,node distance=#1cm, minimum size = 0pt, initial text={},accepting/.style={double distance=1.5pt}]\tikzstyle{every state}=[] #2 \end{tikzpicture}$$}
+
+\newcommand{\automateNM}[2]{\begin{tikzpicture}[->,>=stealth',shorten >=2pt,auto,node distance=#1cm, minimum size = 0pt, initial text={},accepting/.style={double distance=1.5pt}] #2 \end{tikzpicture}}
+\newcommand{\acc}{^\wedge}
+
+\newcommand{\Reg}{\text{Reg }}
+\newcommand{\Rat}{\text{Rat }}
+\newcommand{\ER}{\text{ER}}
+\newcommand{\fact}{\text{fact}}
+\newcommand{\pref}{\text{pref}}
+\newcommand{\suff}{\text{suff}}
+\newcommand{\smt}{\text{smt}}
+\newcommand{\pd}{\mathbb{r}}
+\renewcommand{\Ra}{\Rightarrow}
+\newcommand{\inc}{\subseteq}
+\newcommand{\ie}{\textit{i.e. }}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\Dom}{\text{Dom}}
+\renewcommand{\Im}{\text{Im}}
+\newcommand{\Rec}{\text{Rec }}
+\newcommand{\donc}{\text{ donc }}
+\newcommand{\alors}{\text{ alors }}
+\newcommand{\si}{\text{ si }}
+\newcommand{\sinon}{\text{ sinon }}
+\newcommand{\et}{\text{ et }}
+\newcommand{\ou}{\text{ ou }}
+\newcommand{\MOD}{\text{ MOD }}
+\newcommand{\res}{\text{res}}
+\renewcommand{\Res}{\text{Res}}
+\newcommand{\AR}{\text{AR}}
+\newcommand{\Trans}{\text{Trans}}
+\newcommand{\Action}{\text{Action}}
+\newcommand{\suivant}{\text{suivant}}
+\newcommand{\suivants}{\text{suivants}}
+\newcommand{\Successeur}{\text{Successeur}}
+\newcommand{\Min}{\text{Min}}
+\newcommand{\Max}{\text{Max}}
+\newcommand{\Moy}{\text{Moy}}
+
+
+\newcommand{\gr}{black!40}
+\renewcommand{\phi}{\varphi}
+
+\newcommand{\g}[1]{‘‘#1’’}
+
+\newcommand{\ent}{\models}
+
+
+
+
+
+\newcommand{\Index}{\printindex}
+
+
+
+
+
+\renewcommand{\cftpartfont}{\bfseries\Large\scshape\hrule\vspace{10pt}}%add line above part
+\renewcommand{\cftpartpagefont}{\bfseries}
+\renewcommand{\thepart}{}%removes part roman numerals
+\renewcommand{\cftbeforepartskip}{5mm}
+\renewcommand{\cftpartafterpnum}{\\\hrule}%add line below part
+\cftpagenumbersoff{part}%get rid of part page numbers
+\renewcommand{\cftpartaftersnumb}{}%disable part number
+
+
+\renewcommand{\thechapter}{\Roman{chapter}} %\thispagestyle{fancy}
+
+\titleformat{\part}
+	{\centering\vspace{-2cm}{\thispagestyle{empty}}\HUGE\bfseries\scshape}
+	{}
+	{0em}
+	{}
+
+\titleformat{\chapter}
+	{\thispagestyle{empty}\vspace{-2cm}{\thispagestyle{fancy}}\Huge\bfseries}
+	{Chapitre \thechapter\::\:}
+	{0em}
+	{}
+
+
+\titlecontents{chapter}% <section-type>
+	[0pt]% <left>
+	{\vspace{10pt}}% <above-code>
+	{\bfseries\chaptername\ \thecontentslabel \::\:}% <numbered-entry-format>
+	{}% <numberless-entry-format>
+	{\bfseries\hspace{5pt}\titlerule*[.5pc]{.}\contentspage}% <filler-page-format>
+
+
+\titlecontents{section}
+	[4em]
+	{}
+	{\contentslabel{2.5em}}
+	{}
+	{\hspace{5pt}\titlerule*[.5pc]{.}\contentspage}
+
+\titlecontents{subsection}[7em]{}{\contentslabel{2.8em}}{\hspace*{-2.3em}}{\hspace{5pt}\titlerule*[.5pc]{.}\contentspage}
+
+\titlecontents{subsubsection}[10em]{}{\contentslabel{3.8em}}{\hspace*{-2.3em}}{\hspace{5pt}\titleruleule*[.5pc]{.}\contentspage}
+
+\if@NC
+\renewcommand*\thesection{\arabic{section}}
+\fi
+\pdfbookmark{Contents}{table}
+\setlength{\parindent}{0pt}
+\linespread{\LS}
+
+
+\if@LS
+	\linespread{1.5}
+\fi
+
+
+
+\endinput

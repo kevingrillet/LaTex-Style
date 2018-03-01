@@ -6,7 +6,7 @@
 	\RequirePackage[utf8]{inputenc}
 	\RequirePackage[francais]{babel}
 	\RequirePackage[T1]{fontenc}
-	\RequirePackage{amsmath,amssymb,amsfonts}
+	\RequirePackage{amsmath,amssymb,amsfonts,pifont}
 	\RequirePackage{mathrsfs,mathtools}
 	\RequirePackage{fancyhdr,fancybox,fancyvrb}
 	\RequirePackage{hyperref,titlesec,titletoc}
@@ -17,6 +17,10 @@
 	\RequirePackage{listings, color}
 	\RequirePackage{float,subcaption}
 	\RequirePackage{bbding}
+	\RequirePackage{makecell}
+	\RequirePackage{tabularx}
+	\RequirePackage{enumitem}
+	\RequirePackage{fourier}
 
 % Mise en page
 	\usepackage[a4paper, twoside, top=2cm, bottom=2cm, left=1.5cm, right=1.5cm]{geometry}
@@ -60,6 +64,9 @@
 	\definecolor{mymauve}{rgb}{0.58,0,0.82}
 	\definecolor{darkyellow}{RGB}{204,204,0}
 
+% Thead
+	\renewcommand\theadfont{\bfseries\sffamily}
+
 % Listings
 	\lstset{ %
 		backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
@@ -74,7 +81,7 @@
 		frame=single,	                 % adds a frame around the code
 		keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
 		keywordstyle=\color{blue},       % keyword style
-		language=Java,                    % the language of the code
+		language=SQL,                    % the language of the code
 			% ABAP, ACSL, Ada, Algol, Ant, Assembler, Awk, bash, Basic, C#, C++, C, Caml,
 			% Clean, Cobol, Comal, csh, Delphi, Eiffel, Elan, erlang, Euphoria, Fortran,
 			% GCL, Gnuplot, Haskell, HTML, IDL, inform, Java, JVMIS, ksh, Lisp, Logo, Lua,
@@ -96,3 +103,10 @@
 		tabsize=2,	                     % sets default tabsize to 2 spaces
 		title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
 	}
+
+% Pifont
+	\newcommand{\cmark}{\ding{51}} %ok
+	\newcommand{\xmark}{\ding{55}} %ko
+
+% MyCommand
+	\newcommand{\myparagraph}[1]{\paragraph{#1}\mbox{}\\}

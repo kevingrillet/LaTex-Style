@@ -17,7 +17,14 @@
 	\RequirePackage{listings, color}
 	\RequirePackage{float,subcaption}
 	\RequirePackage{bbding}
+<<<<<<< HEAD
 	\usepackage{fourier}
+=======
+	\RequirePackage{makecell}
+	\RequirePackage{tabularx}
+	\RequirePackage{enumitem}
+	\RequirePackage{fourier}
+>>>>>>> origin/master
 
 % Mise en page
 	\usepackage[a4paper, twoside, top=2cm, bottom=2cm, left=1.5cm, right=1.5cm]{geometry}
@@ -61,6 +68,9 @@
 	\definecolor{mymauve}{rgb}{0.58,0,0.82}
 	\definecolor{darkyellow}{RGB}{204,204,0}
 
+% Thead
+	\renewcommand\theadfont{\bfseries\sffamily}
+
 % Listings
 	\lstset{ %
 		backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
@@ -101,3 +111,9 @@
 % Pifont
 	\newcommand{\cmark}{\ding{51}} %ok
 	\newcommand{\xmark}{\ding{55}} %ko
+<<<<<<< HEAD
+=======
+
+% MyCommand
+	\newcommand{\myparagraph}[1]{\paragraph{#1}\mbox{}\\}
+>>>>>>> origin/master
